@@ -8,6 +8,9 @@
                 </div>
             </div>
             <div class="level-right">
+                <a class="button is-light" href="{{ route('ordenes.index') }}">
+                    Órdenes
+                </a>
                 <button class="button is-primary" type="button" wire:click="startCreating">
                     Nuevo producto
                 </button>
