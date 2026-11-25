@@ -31,7 +31,9 @@ class OrdenCrudTest extends TestCase
             ->assertSee('MON-001')
             ->assertSee('Cantidad solicitada')
             ->assertSee('3')
-            ->assertSee(route('productos.show', $producto));
+            ->assertSee(route('productos.show', $producto))
+            ->assertSee('Exportar información')
+            ->assertSee(route('ordenes.pdf', $orden));
     }
 
     public function test_create_route_opens_order_form(): void

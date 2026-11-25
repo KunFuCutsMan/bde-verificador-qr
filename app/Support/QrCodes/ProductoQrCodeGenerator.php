@@ -18,6 +18,11 @@ final class ProductoQrCodeGenerator extends AbstractQrCodeGenerator
 
     public function generate(Producto $producto): string
     {
-        return $this->generateDataUri($this->targetUrl($producto));
+        return $this->generateSvgDataUri($this->targetUrl($producto));
+    }
+
+    public function generatePng(Producto $producto): string
+    {
+        return $this->generatePngDataUri($this->targetUrl($producto));
     }
 }

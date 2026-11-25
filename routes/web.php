@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PdfExportController;
 use App\Livewire\Ordenes\Index as OrdenesIndex;
 use App\Livewire\Ordenes\Show as OrdenShow;
 use App\Livewire\Productos\Index as ProductosIndex;
@@ -10,6 +11,8 @@ Route::view('/', 'welcome')->name('home');
 
 Route::get('/productos', ProductosIndex::class)->name('productos.index');
 Route::get('/productos/{producto}', ProductoShow::class)->name('productos.show');
+Route::get('/productos/{producto}/pdf', [PdfExportController::class, 'producto'])->name('productos.pdf');
 Route::get('/ordenes', OrdenesIndex::class)->name('ordenes.index');
 Route::get('/ordenes/crear', OrdenesIndex::class)->name('ordenes.create');
 Route::get('/ordenes/{orden}', OrdenShow::class)->name('ordenes.show');
+Route::get('/ordenes/{orden}/pdf', [PdfExportController::class, 'orden'])->name('ordenes.pdf');

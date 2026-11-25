@@ -8,6 +8,9 @@
                 </div>
             </div>
             <div class="level-right">
+                <a class="button is-primary" href="{{ route('ordenes.pdf', $orden) }}" target="_blank" rel="noopener">
+                    Exportar información
+                </a>
                 <a class="button" href="{{ route('ordenes.index') }}">Volver a órdenes</a>
             </div>
         </div>

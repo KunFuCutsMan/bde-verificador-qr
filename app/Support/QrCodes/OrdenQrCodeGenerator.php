@@ -18,6 +18,11 @@ final class OrdenQrCodeGenerator extends AbstractQrCodeGenerator
 
     public function generate(Orden $orden): string
     {
-        return $this->generateDataUri($this->targetUrl($orden));
+        return $this->generateSvgDataUri($this->targetUrl($orden));
+    }
+
+    public function generatePng(Orden $orden): string
+    {
+        return $this->generatePngDataUri($this->targetUrl($orden));
     }
 }

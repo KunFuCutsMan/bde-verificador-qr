@@ -21,6 +21,7 @@ class QrCodeGeneratorTest extends TestCase
 
         $this->assertSame(route('productos.show', $producto), $generator->targetUrl($producto));
         $this->assertStringStartsWith('data:image/svg+xml;base64,', $generator->generate($producto));
+        $this->assertStringStartsWith('data:image/png;base64,', $generator->generatePng($producto));
     }
 
     public function test_order_qr_code_targets_its_detail_page(): void
@@ -33,6 +34,7 @@ class QrCodeGeneratorTest extends TestCase
 
         $this->assertSame(route('ordenes.show', $orden), $generator->targetUrl($orden));
         $this->assertStringStartsWith('data:image/svg+xml;base64,', $generator->generate($orden));
+        $this->assertStringStartsWith('data:image/png;base64,', $generator->generatePng($orden));
     }
 
     public function test_product_qr_code_rejects_an_unsaved_model(): void

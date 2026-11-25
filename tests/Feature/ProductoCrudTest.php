@@ -30,7 +30,9 @@ class ProductoCrudTest extends TestCase
             ->assertSee('MON-001')
             ->assertSee('Proveedor Central')
             ->assertSee('Cantidad solicitada: 3')
-            ->assertSee(route('ordenes.show', $orden));
+            ->assertSee(route('ordenes.show', $orden))
+            ->assertSee('Exportar información')
+            ->assertSee(route('productos.pdf', $producto));
     }
 
     public function test_products_page_lists_products(): void
