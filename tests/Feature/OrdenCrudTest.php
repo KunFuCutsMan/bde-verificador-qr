@@ -13,6 +13,20 @@ class OrdenCrudTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_create_route_opens_order_form(): void
+    {
+        Producto::factory()->create([
+            'nombre' => 'Monitor',
+            'SKU' => 'MON-001',
+        ]);
+
+        $this->get(route('ordenes.create'))
+            ->assertOk()
+            ->assertSee('Guardar orden')
+            ->assertSee('Selecciona un producto')
+            ->assertDontSee('Productos y cantidades');
+    }
+
     public function test_orders_page_lists_products_with_quantities(): void
     {
         $producto = Producto::factory()->create([

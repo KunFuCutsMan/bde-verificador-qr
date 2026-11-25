@@ -17,11 +17,22 @@ class Index extends Component
 
     public string $search = '';
 
+    public bool $isCreatePage = false;
+
     public bool $formVisible = false;
 
     public ?int $ordenId = null;
 
     public array $items = [];
+
+    public function mount(): void
+    {
+        $this->isCreatePage = request()->routeIs('ordenes.create');
+
+        if ($this->isCreatePage) {
+            $this->startCreating();
+        }
+    }
 
     public function updatedSearch(): void
     {
@@ -69,6 +80,10 @@ class Index extends Component
     public function cancelForm(): void
     {
         $this->resetForm();
+
+        if ($this->isCreatePage) {
+            $this->redirectRoute('ordenes.index');
+        }
     }
 
     public function save(): void
@@ -104,6 +119,10 @@ class Index extends Component
         );
 
         $this->resetForm();
+
+        if ($isCreating && $this->isCreatePage) {
+            $this->redirectRoute('ordenes.index');
+        }
     }
 
     public function delete(int $ordenId): void

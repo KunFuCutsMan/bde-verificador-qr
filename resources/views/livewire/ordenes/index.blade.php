@@ -11,9 +11,17 @@
                 <a class="button is-light" href="{{ route('productos.index') }}">
                     Productos
                 </a>
-                <button class="button is-primary" type="button" wire:click="startCreating" @disabled($productosDisponibles->isEmpty())>
-                    Nueva orden
-                </button>
+                @if ($isCreatePage)
+                    <a class="button" href="{{ route('ordenes.index') }}">Volver a órdenes</a>
+                @elseif ($productosDisponibles->isEmpty())
+                    <button class="button is-primary" type="button" disabled>
+                        Nueva orden
+                    </button>
+                @else
+                    <a class="button is-primary" href="{{ route('ordenes.create') }}">
+                        Nueva orden
+                    </a>
+                @endif
             </div>
         </div>
 
@@ -83,67 +91,69 @@
             </div>
         @endif
 
-        <div class="field">
-            <label class="label" for="buscar">Buscar órdenes</label>
-            <div class="control">
-                <input class="input" id="buscar" type="search" wire:model.live.debounce.300ms="search" placeholder="Número de orden, producto o SKU">
+        @unless ($isCreatePage)
+            <div class="field">
+                <label class="label" for="buscar">Buscar órdenes</label>
+                <div class="control">
+                    <input class="input" id="buscar" type="search" wire:model.live.debounce.300ms="search" placeholder="Número de orden, producto o SKU">
+                </div>
             </div>
-        </div>
 
-        <div class="table-container">
-            <table class="table is-fullwidth is-striped is-hoverable">
-                <thead>
-                    <tr>
-                        <th>Orden</th>
-                        <th>Fecha</th>
-                        <th>Productos y cantidades</th>
-                        <th class="has-text-right">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($ordenes as $orden)
-                        <tr wire:key="orden-{{ $orden->id }}">
-                            <td>#{{ $orden->id }}</td>
-                            <td>{{ $orden->created_at->format('d/m/Y H:i') }}</td>
-                            <td>
-                                @foreach ($orden->productos as $producto)
-                                    <div>{{ $producto->nombre }} × {{ $producto->pivot->cantidad }}</div>
-                                @endforeach
-                            </td>
-                            <td class="has-text-right">
-                                <div class="buttons are-small is-right">
-                                    <button class="button is-info is-light" type="button" wire:click="startEditing({{ $orden->id }})">
-                                        Editar
-                                    </button>
-                                    <button class="button is-danger is-light" type="button" wire:click="delete({{ $orden->id }})" wire:confirm="¿Eliminar esta orden? Esta acción no se puede deshacer.">
-                                        Eliminar
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
+            <div class="table-container">
+                <table class="table is-fullwidth is-striped is-hoverable">
+                    <thead>
                         <tr>
-                            <td colspan="4" class="has-text-centered has-text-grey">
-                                {{ $search !== '' ? 'No se encontraron órdenes.' : 'Todavía no hay órdenes registradas.' }}
-                            </td>
+                            <th>Orden</th>
+                            <th>Fecha</th>
+                            <th>Productos y cantidades</th>
+                            <th class="has-text-right">Acciones</th>
                         </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @forelse ($ordenes as $orden)
+                            <tr wire:key="orden-{{ $orden->id }}">
+                                <td>#{{ $orden->id }}</td>
+                                <td>{{ $orden->created_at->format('d/m/Y H:i') }}</td>
+                                <td>
+                                    @foreach ($orden->productos as $producto)
+                                        <div>{{ $producto->nombre }} × {{ $producto->pivot->cantidad }}</div>
+                                    @endforeach
+                                </td>
+                                <td class="has-text-right">
+                                    <div class="buttons are-small is-right">
+                                        <button class="button is-info is-light" type="button" wire:click="startEditing({{ $orden->id }})">
+                                            Editar
+                                        </button>
+                                        <button class="button is-danger is-light" type="button" wire:click="delete({{ $orden->id }})" wire:confirm="¿Eliminar esta orden? Esta acción no se puede deshacer.">
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="has-text-centered has-text-grey">
+                                    {{ $search !== '' ? 'No se encontraron órdenes.' : 'Todavía no hay órdenes registradas.' }}
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
-        @if ($ordenes->hasPages())
-            <nav class="pagination is-centered" role="navigation" aria-label="Paginación de órdenes">
-                <button class="pagination-previous" type="button" wire:click="previousPage" @disabled($ordenes->onFirstPage())>
-                    Anterior
-                </button>
-                <button class="pagination-next" type="button" wire:click="nextPage" @disabled(!$ordenes->hasMorePages())>
-                    Siguiente
-                </button>
-                <p class="has-text-centered" aria-live="polite">
-                    Página {{ $ordenes->currentPage() }} de {{ $ordenes->lastPage() }}
-                </p>
-            </nav>
-        @endif
+            @if ($ordenes->hasPages())
+                <nav class="pagination is-centered" role="navigation" aria-label="Paginación de órdenes">
+                    <button class="pagination-previous" type="button" wire:click="previousPage" @disabled($ordenes->onFirstPage())>
+                        Anterior
+                    </button>
+                    <button class="pagination-next" type="button" wire:click="nextPage" @disabled(!$ordenes->hasMorePages())>
+                        Siguiente
+                    </button>
+                    <p class="has-text-centered" aria-live="polite">
+                        Página {{ $ordenes->currentPage() }} de {{ $ordenes->lastPage() }}
+                    </p>
+                </nav>
+            @endif
+        @endunless
     </div>
 </section>
