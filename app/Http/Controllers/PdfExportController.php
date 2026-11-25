@@ -21,8 +21,8 @@ class PdfExportController extends Controller
                 'qrCodeDataUri' => (new ProductoQrCodeGenerator)->generatePng($producto),
             ])->render(),
             'A5',
-            'portrait',
-            'producto-'.$producto->id.'.pdf',
+            'landscape',
+            'producto-' . $producto->id . '.pdf',
         );
     }
 
@@ -38,7 +38,7 @@ class PdfExportController extends Controller
             ])->render(),
             'A4',
             'landscape',
-            'orden-'.$orden->id.'.pdf',
+            'orden-' . $orden->id . '.pdf',
         );
     }
 
@@ -58,7 +58,7 @@ class PdfExportController extends Controller
 
         return response($pdf->output(), 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$filename.'"',
+            'Content-Disposition' => 'inline; filename="' . $filename . '"',
         ]);
     }
 }
