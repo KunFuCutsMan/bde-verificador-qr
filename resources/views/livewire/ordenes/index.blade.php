@@ -112,7 +112,9 @@
                     <tbody>
                         @forelse ($ordenes as $orden)
                             <tr wire:key="orden-{{ $orden->id }}">
-                                <td>#{{ $orden->id }}</td>
+                                <td>
+                                    <a href="{{ route('ordenes.show', $orden) }}">#{{ $orden->id }}</a>
+                                </td>
                                 <td>{{ $orden->created_at->format('d/m/Y H:i') }}</td>
                                 <td>
                                     @foreach ($orden->productos as $producto)
@@ -121,6 +123,9 @@
                                 </td>
                                 <td class="has-text-right">
                                     <div class="buttons are-small is-right">
+                                        <a class="button is-light" href="{{ route('ordenes.show', $orden) }}">
+                                            Ver
+                                        </a>
                                         <button class="button is-info is-light" type="button" wire:click="startEditing({{ $orden->id }})">
                                             Editar
                                         </button>

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\Productos\Index;
+use App\Models\Orden;
 use App\Models\Producto;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -11,6 +12,26 @@ use Tests\TestCase;
 class ProductoCrudTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_product_detail_page_shows_product_fields_and_related_order_quantities(): void
+    {
+        $producto = Producto::factory()->create([
+            'nombre' => 'Monitor',
+            'SKU' => 'MON-001',
+            'Proveedor' => 'Proveedor Central',
+            'cantidad' => 8,
+        ]);
+        $orden = Orden::create();
+        $orden->productos()->attach($producto->id, ['cantidad' => 3]);
+
+        $this->get(route('productos.show', $producto))
+            ->assertOk()
+            ->assertSee('Monitor')
+            ->assertSee('MON-001')
+            ->assertSee('Proveedor Central')
+            ->assertSee('Cantidad solicitada: 3')
+            ->assertSee(route('ordenes.show', $orden));
+    }
 
     public function test_products_page_lists_products(): void
     {

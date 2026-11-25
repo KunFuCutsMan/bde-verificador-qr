@@ -95,12 +95,17 @@
                 <tbody>
                     @forelse ($productos as $producto)
                         <tr wire:key="producto-{{ $producto->id }}">
-                            <td>{{ $producto->nombre }}</td>
+                            <td>
+                                <a href="{{ route('productos.show', $producto) }}">{{ $producto->nombre }}</a>
+                            </td>
                             <td>{{ $producto->SKU }}</td>
                             <td>{{ $producto->Proveedor }}</td>
                             <td class="has-text-right">{{ $producto->cantidad }}</td>
                             <td class="has-text-right">
                                 <div class="buttons are-small is-right">
+                                    <a class="button is-light" href="{{ route('productos.show', $producto) }}">
+                                        Ver
+                                    </a>
                                     <button class="button is-info is-light" type="button" wire:click="startEditing({{ $producto->id }})">
                                         Editar
                                     </button>
